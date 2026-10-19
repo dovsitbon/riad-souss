@@ -1,0 +1,21 @@
+# Riad Souss
+
+> Restaurant marocain à Groslay (Val-d'Oise, 95410), au 120 rue du Général Leclerc, à environ 100 m de la gare de Groslay (Transilien ligne H). Spécialité 100 % marocaine : couscous, tajines, grillades, pastilla, pâtisseries et thé à la menthe.
+
+## Informations clés (relevées le 19 octobre 2026)
+- Adresse : 120 rue du Général Leclerc, 95410 Groslay, France
+- Téléphone : 01 39 83 13 59 (+33 1 39 83 13 59)
+- Horaires : du mardi au dimanche, 12h00–14h30 et 19h00–22h30 ; fermé le lundi
+- Réservation : en ligne sur TheFork (https://www.thefork.fr/restaurant/riad-souss-r338569) ou par téléphone
+- Prix moyen : 30 € (entrée + plat ou plat + dessert, hors boissons, selon TheFork)
+- Halal : indiqué sur la fiche TheFork
+- Accessibilité : entrée et places assises accessibles en fauteuil roulant
+- Notes publiques : Google 4,6/5 (373 avis), TheFork 9,4/10 (426 avis)
+- Instagram : https://www.instagram.com/restaurant_riad_souss/
+
+## Pages
+- [Accueil](https://riad-souss.vercel.app/)
+- [La carte et les prix](https://riad-souss.vercel.app/carte)
+- [Repas de groupe](https://riad-souss.vercel.app/groupes)
+- [Horaires, accès, FAQ](https://riad-souss.vercel.app/infos-pratiques)
+- [Contact](https://riad-souss.vercel.app/contact)

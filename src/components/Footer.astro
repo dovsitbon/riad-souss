@@ -1,0 +1,91 @@
+---
+import Icon from './Icon.astro';
+import { business, hours } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="zellige-band" aria-hidden="true"></div>
+  <div class="container footer-grid">
+    <div>
+      <p class="f-brand" translate="no">Riad Souss</p>
+      <p class="f-muted">{business.specialite}. Couscous, tajines, grillades et pâtisseries, à Groslay dans le Val-d'Oise.</p>
+      <div class="f-social">
+        <a href={business.links.instagram} target="_blank" rel="noopener">
+          <Icon name="instagram" /> Instagram
+        </a>
+        <a href={business.links.theFork} target="_blank" rel="noopener">
+          <Icon name="calendar" /> TheFork
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="f-title">Adresse</h2>
+      <address>
+        {business.address.street}<br />
+        {business.address.postalCode} {business.address.city}
+      </address>
+      <p><a href={business.phoneHref} class="f-strong">{business.phoneDisplay}</a></p>
+      <p><a href={business.links.directions} target="_blank" rel="noopener">Itinéraire</a></p>
+    </div>
+
+    <div>
+      <h2 class="f-title">Horaires</h2>
+      <ul class="f-hours">
+        {hours.map((d) => (
+          <li>
+            <span>{d.label}</span>
+            <span>{d.slots.length ? d.slots.map(([a, b]) => `${a}–${b}`).join(' · ') : 'Fermé'}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="f-title">Le site</h2>
+      <ul class="f-links">
+        <li><a href="/carte">La carte</a></li>
+        <li><a href="/groupes">Repas de groupe</a></li>
+        <li><a href="/infos-pratiques">Infos pratiques</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/mentions-legales">Mentions légales</a></li>
+        <li><a href="/confidentialite">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container f-bottom">
+    <p>© {year} Riad Souss · {business.legal.company} {business.legal.form}</p>
+    <p>
+      Photos d'illustration : <a href="https://unsplash.com/license" target="_blank" rel="noopener">Unsplash</a>, non contractuelles.
+      Les plats présentés ne sont pas ceux du restaurant.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--night); color: #e9dfd2; }
+  .footer-grid {
+    display: grid; gap: 2.5rem;
+    padding-block: var(--space-l);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1040px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1.3fr 0.9fr; } }
+  .f-brand { font-family: var(--font-display); font-size: 2rem; margin: 0 0 0.5rem; color: #fff; }
+  .f-muted { color: #bfb2a4; max-width: 34ch; }
+  .f-title { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--safran); margin-bottom: 1rem; font-weight: 700; }
+  address { font-style: normal; margin-bottom: 1rem; }
+  a { color: #f3ebe0; }
+  a:hover { color: var(--safran); }
+  .f-strong { font-weight: 700; font-size: 1.1rem; }
+  .f-social { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+  .f-social a { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; text-decoration: none; font-weight: 500; }
+  .f-social :global(svg) { width: 1.2rem; height: 1.2rem; }
+  .f-hours, .f-links { list-style: none; margin: 0; padding: 0; }
+  .f-hours li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.3rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.95rem; }
+  .f-hours li span:last-child { color: #cfc3b5; font-variant-numeric: tabular-nums; }
+  .f-links li a { display: inline-block; padding: 0.35rem 0; min-height: 32px; }
+  .f-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-block: 1.5rem; font-size: 0.82rem; color: #a99b8c; display: grid; gap: 0.25rem; }
+  .f-bottom p { margin: 0; }
+  .f-bottom a { color: #cfc3b5; }
+</style>

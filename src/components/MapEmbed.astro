@@ -1,0 +1,27 @@
+---
+import { business } from '../data/site';
+const { lat, lng } = business.geo;
+const d = 0.004;
+const bbox = [lng - d * 1.6, lat - d, lng + d * 1.6, lat + d].map((n) => n.toFixed(5)).join('%2C');
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
+---
+<figure class="map">
+  <iframe
+    title="Carte : Riad Souss, 120 rue du Général Leclerc à Groslay"
+    src={src}
+    loading="lazy"
+    referrerpolicy="no-referrer"
+  ></iframe>
+  <figcaption>
+    <a href={business.links.googleMaps} target="_blank" rel="noopener">Ouvrir dans Google Maps</a>
+    <span aria-hidden="true">·</span>
+    <span>© contributeurs <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></span>
+  </figcaption>
+</figure>
+
+<style>
+  .map { margin: 0; }
+  iframe { width: 100%; aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: var(--radius); background: #e6ddd0; display: block; }
+  figcaption { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: var(--step--1); color: var(--ink-soft); margin-top: 0.6rem; }
+  figcaption a { color: inherit; }
+</style>

@@ -1,0 +1,40 @@
+---
+import { hours } from '../data/site';
+import OpenStatus from './OpenStatus.astro';
+---
+<div class="hours">
+  <OpenStatus />
+  <table>
+    <caption class="visually-hidden">Horaires d'ouverture du Riad Souss</caption>
+    <tbody>
+      {hours.map((d) => (
+        <tr data-day={d.day}>
+          <th scope="row">{d.label}</th>
+          <td>
+            {d.slots.length
+              ? d.slots.map(([a, b]) => <span>{a.replace(':', 'h')} – {b.replace(':', 'h')}</span>)
+              : <span class="closed">Fermé</span>}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .hours { margin-top: 0.5rem; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-variant-numeric: tabular-nums; }
+  th, td { padding: 0.65rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-weight: 500; width: 40%; }
+  td { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; justify-content: flex-end; color: var(--ink-soft); }
+  .closed { color: #9a3d31; font-weight: 500; }
+  tr.is-today th, tr.is-today td { color: var(--ink); font-weight: 700; }
+  tr.is-today th::after { content: " · aujourd'hui"; font-weight: 400; color: var(--zellige); font-size: 0.85em; }
+</style>
+
+<script>
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const wd = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', weekday: 'short' }).format(new Date());
+  const today = days.indexOf(wd);
+  document.querySelectorAll(`.hours tr[data-day="${today}"]`).forEach((tr) => tr.classList.add('is-today'));
+</script>

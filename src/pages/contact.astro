@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import OpenStatus from '../components/OpenStatus.astro';
+import { business } from '../data/site';
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+const crumbsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Contact', item: `${site}/contact` },
+  ],
+};
+---
+<Base
+  title="Contact et demande de groupe"
+  description="Contactez le Riad Souss à Groslay : téléphone 01 39 83 13 59, réservation en ligne sur TheFork, formulaire pour les questions et les demandes de groupe."
+  jsonLd={[crumbsLd]}
+>
+  <PageHero title="Contact" eyebrow="Écrire ou appeler" crumb="Contact">
+    <p class="lead">Pour réserver une table ce soir, le plus rapide est d'appeler ou de passer par TheFork. Le formulaire sert aux questions et aux demandes de groupe.</p>
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="container contact-grid">
+      <aside class="channels">
+        <a class="channel" href={business.phoneHref}>
+          <Icon name="phone" />
+          <span><strong>Téléphone</strong><span class="big">{business.phoneDisplay}</span></span>
+        </a>
+        <a class="channel" href={business.links.theFork} target="_blank" rel="noopener">
+          <Icon name="calendar" />
+          <span><strong>Réservation en ligne</strong><span>TheFork, gratuit et immédiat</span></span>
+        </a>
+        <a class="channel" href={business.links.instagram} target="_blank" rel="noopener">
+          <Icon name="instagram" />
+          <span><strong>Instagram</strong><span>@restaurant_riad_souss</span></span>
+        </a>
+        <a class="channel" href={business.links.directions} target="_blank" rel="noopener">
+          <Icon name="pin" />
+          <span><strong>Adresse</strong><span>{business.address.street}, {business.address.postalCode} {business.address.city}</span></span>
+        </a>
+        <div class="channel-status"><OpenStatus /></div>
+      </aside>
+
+      <div class="form-card">
+        <h2>Envoyer un message</h2>
+        <p class="muted small">Les champs marqués <span aria-hidden="true">*</span><span class="visually-hidden">d'un astérisque</span> sont obligatoires.</p>
+
+        <div id="form-feedback" class="feedback" role="status" aria-live="polite" tabindex="-1" hidden></div>
+
+        <form id="contact-form" action="/api/contact" method="post" novalidate>
+          <fieldset class="sujet">
+            <legend>Objet de votre demande <span aria-hidden="true">*</span></legend>
+            <label><input type="radio" name="sujet" value="question" checked /> Une question</label>
+            <label><input type="radio" name="sujet" value="groupe" /> Un repas de groupe</label>
+            <label><input type="radio" name="sujet" value="autre" /> Autre</label>
+          </fieldset>
+
+          <div class="row">
+            <div class="field">
+              <label for="nom">Nom <span aria-hidden="true">*</span></label>
+              <input id="nom" name="nom" type="text" autocomplete="name" required maxlength="100" aria-describedby="nom-err" />
+              <p class="err" id="nom-err"></p>
+            </div>
+            <div class="field">
+              <label for="email">E-mail <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" spellcheck="false" autocapitalize="off" required maxlength="160" aria-describedby="email-err" />
+              <p class="err" id="email-err"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="telephone">Téléphone <span class="opt">(facultatif)</span></label>
+            <input id="telephone" name="telephone" type="tel" autocomplete="tel" maxlength="30" aria-describedby="telephone-err" />
+            <p class="err" id="telephone-err"></p>
+          </div>
+
+          <div class="row group-only" data-group-only>
+            <div class="field">
+              <label for="date">Date souhaitée</label>
+              <input id="date" name="date" type="date" aria-describedby="date-err" />
+              <p class="err" id="date-err"></p>
+            </div>
+            <div class="field">
+              <label for="personnes">Nombre de personnes</label>
+              <input id="personnes" name="personnes" type="number" inputmode="numeric" min="2" max="200" aria-describedby="personnes-err" />
+              <p class="err" id="personnes-err"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="message">Message <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="6" required minlength="10" maxlength="3000" aria-describedby="message-help message-err"></textarea>
+            <p class="help" id="message-help">Pour un groupe : l'occasion, le budget par personne, les contraintes alimentaires.</p>
+            <p class="err" id="message-err"></p>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="website">Ne pas remplir</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="field consent">
+            <label>
+              <input type="checkbox" name="consent" value="oui" required aria-describedby="consent-err" />
+              <span>J'accepte que mes informations soient utilisées pour répondre à ma demande (voir la <a href="/confidentialite">politique de confidentialité</a>). <span aria-hidden="true">*</span></span>
+            </label>
+            <p class="err" id="consent-err"></p>
+          </div>
+
+          <p class="note small">Ce formulaire ne vaut pas réservation : une table ou un repas de groupe n'est confirmé qu'après la réponse du restaurant.</p>
+
+          <button class="btn btn--primary submit" type="submit">
+            <span class="label">Envoyer</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid { display: grid; gap: 2rem; padding-bottom: var(--space-xl); align-items: start; }
+  @media (min-width: 960px) { .contact-grid { grid-template-columns: 0.85fr 1.15fr; gap: 4rem; } }
+  .channels { display: grid; gap: 0.75rem; }
+  .channel { display: flex; gap: 1rem; align-items: center; padding: 1.1rem 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; transition: border-color 0.2s; }
+  .channel:hover { border-color: var(--terracotta); color: var(--ink); }
+  .channel > :global(svg) { width: 1.6rem; height: 1.6rem; color: var(--terracotta); flex: none; }
+  .channel > span { display: flex; flex-direction: column; }
+  .channel strong { font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .channel .big { font-family: var(--font-display); font-size: 1.6rem; }
+  .channel-status { padding: 0.5rem 0.25rem; }
+
+  .form-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.25rem, 1rem + 2vw, 2.5rem); }
+  .form-card h2 { font-size: var(--step-2); }
+  form { display: grid; gap: 1.1rem; margin-top: 1.25rem; }
+  .row { display: grid; gap: 1.1rem; }
+  @media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
+  .field { display: grid; gap: 0.35rem; }
+  label { font-weight: 500; }
+  .opt { font-weight: 400; color: var(--ink-soft); }
+  input[type='text'], input[type='email'], input[type='tel'], input[type='date'], input[type='number'], textarea {
+    width: 100%; font: inherit; color: var(--ink);
+    background: #fff; border: 1.5px solid rgba(43, 32, 26, 0.28); border-radius: 6px;
+    padding: 0.75rem 0.85rem; min-height: 48px;
+  }
+  textarea { resize: vertical; min-height: 140px; }
+  input:focus-visible, textarea:focus-visible { outline: 3px solid var(--zellige); outline-offset: 1px; border-color: var(--zellige); }
+  [aria-invalid='true'] { border-color: #a3322a !important; }
+  .err { color: #a3322a; font-size: var(--step--1); margin: 0; min-height: 0; font-weight: 500; }
+  .err:empty { display: none; }
+  .help { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
+  fieldset.sujet { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  fieldset.sujet legend { font-weight: 500; margin-bottom: 0.5rem; width: 100%; padding: 0; }
+  fieldset.sujet label { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border: 1.5px solid var(--line); border-radius: 999px; cursor: pointer; min-height: 44px; font-weight: 500; }
+  fieldset.sujet label:has(input:checked) { border-color: var(--terracotta); background: rgba(158, 59, 34, 0.07); color: var(--terracotta-deep); }
+  fieldset.sujet input { accent-color: var(--terracotta); }
+  .consent label { display: flex; gap: 0.7rem; align-items: flex-start; font-weight: 400; font-size: 0.95rem; }
+  .consent input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--terracotta); flex: none; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .submit { justify-self: start; min-width: 160px; }
+  .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .submit[aria-busy='true'] .spinner { display: inline-block; }
+  .submit[disabled] { opacity: 0.75; cursor: progress; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .feedback { padding: 1rem 1.15rem; border-radius: 8px; margin-top: 1rem; font-weight: 500; }
+  .feedback.ok { background: #e3efe6; color: #1f5a37; border: 1px solid #b7d4bf; }
+  .feedback.ko { background: #f8e4e1; color: #82261e; border: 1px solid #e6bab3; }
+  :global(.js) .group-only[hidden] { display: none; }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const feedback = document.getElementById('form-feedback') as HTMLDivElement | null;
+
+  if (form && feedback) {
+    const groupRow = form.querySelector<HTMLElement>('[data-group-only]');
+    const syncGroup = () => {
+      const isGroup = (form.elements.namedItem('sujet') as RadioNodeList).value === 'groupe';
+      if (groupRow) groupRow.hidden = !isGroup;
+    };
+    const params = new URLSearchParams(location.search);
+    const preset = params.get('sujet');
+    if (preset) {
+      const r = form.querySelector<HTMLInputElement>(`input[name="sujet"][value="${CSS.escape(preset)}"]`);
+      if (r) r.checked = true;
+    }
+    // Retour du mode sans JavaScript
+    if (params.get('envoye') === '1') show(true, 'Merci, votre message a bien été envoyé. Le restaurant vous répondra rapidement.');
+    syncGroup();
+    form.addEventListener('change', (e) => {
+      if ((e.target as HTMLInputElement).name === 'sujet') syncGroup();
+    });
+
+    const dateInput = form.querySelector<HTMLInputElement>('#date');
+    if (dateInput) dateInput.min = new Date().toISOString().slice(0, 10);
+
+    function show(ok: boolean, msg: string) {
+      feedback!.hidden = false;
+      feedback!.className = `feedback ${ok ? 'ok' : 'ko'}`;
+      feedback!.textContent = msg;
+      feedback!.focus();
+    }
+
+    const messages: Record<string, (el: HTMLInputElement) => string> = {
+      nom: (el) => (el.value.trim() ? '' : 'Indiquez votre nom.'),
+      email: (el) =>
+        !el.value.trim() ? 'Indiquez votre adresse e-mail.' : el.validity.typeMismatch ? 'Cette adresse e-mail ne semble pas valide (ex. nom@exemple.fr).' : '',
+      telephone: (el) => (el.value && !/^[+()\d\s.-]{6,30}$/.test(el.value) ? 'Ce numéro ne semble pas valide.' : ''),
+      message: (el) => (el.value.trim().length < 10 ? 'Votre message doit faire au moins 10 caractères.' : ''),
+      personnes: (el) => (el.value && (Number(el.value) < 2 || Number(el.value) > 200) ? 'Indiquez un nombre entre 2 et 200.' : ''),
+      date: (el) => (el.value && el.value < el.min ? 'Choisissez une date à venir.' : ''),
+      consent: (el) => (el.checked ? '' : 'Cochez la case pour que nous puissions vous répondre.'),
+    };
+
+    function validateField(el: HTMLInputElement) {
+      const fn = messages[el.name];
+      if (!fn) return true;
+      const msg = fn(el);
+      const err = document.getElementById(`${el.name}-err`);
+      if (err) err.textContent = msg;
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    }
+
+    form.addEventListener('blur', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.name && el.getAttribute('aria-invalid') !== null) validateField(el);
+    }, true);
+    form.addEventListener('focusout', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.name && (el.value || el.type === 'checkbox')) validateField(el);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fields = Array.from(form.querySelectorAll<HTMLInputElement>('input[name], textarea[name]')).filter(
+        (el) => el.name in messages && !el.closest('[hidden]'),
+      );
+      const invalid = fields.filter((el) => !validateField(el));
+      if (invalid.length) {
+        invalid[0].focus();
+        return;
+      }
+      const btn = form.querySelector<HTMLButtonElement>('.submit')!;
+      btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
+      btn.querySelector('.label')!.textContent = 'Envoi…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          form.reset();
+          syncGroup();
+          form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+          show(true, data.message || 'Merci, votre message a bien été envoyé.');
+        } else {
+          if (data.fields) {
+            for (const [name, msg] of Object.entries(data.fields as Record<string, string>)) {
+              const err = document.getElementById(`${name}-err`);
+              if (err) err.textContent = msg;
+              form.querySelector(`[name="${name}"]`)?.setAttribute('aria-invalid', 'true');
+            }
+          }
+          show(false, data.message || "L'envoi a échoué. Appelez le restaurant au 01 39 83 13 59.");
+        }
+      } catch {
+        show(false, "Pas de connexion. Réessayez dans un instant ou appelez le restaurant au 01 39 83 13 59.");
+      } finally {
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        btn.querySelector('.label')!.textContent = 'Envoyer';
+      }
+    });
+  }
+</script>

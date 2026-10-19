@@ -1,0 +1,142 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+const nav = [
+  { href: '/carte', label: 'La carte' },
+  { href: '/groupes', label: 'Groupes' },
+  { href: '/infos-pratiques', label: 'Infos pratiques' },
+  { href: '/contact', label: 'Contact' },
+];
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+---
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand" aria-label="Riad Souss, retour à l'accueil">
+      <svg class="brand-star" viewBox="0 0 32 32" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="8" y="8" width="16" height="16" />
+          <rect x="8" y="8" width="16" height="16" transform="rotate(45 16 16)" />
+        </g>
+        <circle cx="16" cy="16" r="2.6" fill="currentColor" />
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name" translate="no">Riad Souss</span>
+        <span class="brand-sub">Cuisine marocaine · Groslay</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="icon-open"><Icon name="menu" /></span>
+      <span class="icon-close"><Icon name="close" /></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+      <div class="nav-actions">
+        <a class="nav-phone" href={business.phoneHref}>
+          <Icon name="phone" /> {business.phoneDisplay}
+        </a>
+        <a class="btn btn--primary" href={business.links.theFork} target="_blank" rel="noopener">
+          Réserver une table
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245, 239, 230, 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 72px; }
+  .brand { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ink); }
+  .brand:hover { color: var(--ink); }
+  .brand-star { width: 34px; height: 34px; color: var(--terracotta); flex: none; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .brand-name { font-family: var(--font-display); font-size: 1.45rem; font-weight: 600; letter-spacing: -0.02em; }
+  .brand-sub { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-top: 2px; }
+
+  .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.25rem; }
+  .site-nav ul a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.8rem;
+    text-decoration: none; font-weight: 500; border-radius: 6px;
+  }
+  .site-nav ul a[aria-current='page'] { color: var(--terracotta); text-decoration: underline; text-underline-offset: 0.35em; }
+  .nav-actions { display: flex; align-items: center; gap: 1rem; }
+  .nav-phone { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700; text-decoration: none; min-height: 44px; }
+  .nav-phone :global(svg) { width: 1.1rem; height: 1.1rem; color: var(--terracotta); }
+
+  .nav-toggle {
+    display: none;
+    width: 48px; height: 48px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    align-items: center; justify-content: center; cursor: pointer;
+  }
+  .nav-toggle :global(svg) { width: 24px; height: 24px; }
+  .nav-toggle .icon-close { display: none; }
+  .nav-toggle[aria-expanded='true'] .icon-open { display: none; }
+  .nav-toggle[aria-expanded='true'] .icon-close { display: inline; }
+
+  @media (min-width: 1040px) {
+    .site-nav { display: flex; align-items: center; gap: 1.5rem; }
+  }
+
+  @media (max-width: 1039px) {
+    :global(.js) .nav-toggle { display: inline-flex; }
+    :global(.js) .site-nav {
+      display: none;
+      position: absolute; left: 0; right: 0; top: 100%;
+      background: var(--chaux);
+      border-bottom: 1px solid var(--line);
+      padding: 0.5rem var(--gutter) 1.5rem;
+      box-shadow: 0 18px 30px -24px rgba(43, 32, 26, 0.5);
+    }
+    :global(.js) .site-nav.is-open { display: block; }
+    .site-nav ul { flex-direction: column; }
+    .site-nav ul a { width: 100%; font-size: 1.15rem; border-bottom: 1px solid var(--line); border-radius: 0; padding: 0.5rem 0; min-height: 52px; }
+    .nav-actions { flex-direction: column; align-items: stretch; margin-top: 1rem; gap: 0.5rem; }
+    .nav-phone { justify-content: center; }
+    /* Sans JS : navigation affichée sous la barre */
+    :global(html:not(.js)) .bar { flex-wrap: wrap; padding-bottom: 0.5rem; }
+    :global(html:not(.js)) .site-nav { width: 100%; }
+  }
+  @media (max-width: 420px) {
+    .brand-sub { display: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const close = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+    };
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+      if (open) nav.querySelector('a')?.focus();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        close();
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1040px)').addEventListener('change', close);
+  }
+</script>

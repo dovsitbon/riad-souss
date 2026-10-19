@@ -1,0 +1,310 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import OpenStatus from '../components/OpenStatus.astro';
+import Hours from '../components/Hours.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import { business, ratings, reviewThemes, photos, img, srcset, euro, RELEVE, MENU_UPDATED } from '../data/site';
+
+const signatures = [
+  { name: 'Couscous mishoui', price: 19, text: 'Le couscous accompagné de son méchoui. Le couscous est le plat le plus cité dans les avis des clients.', photo: photos.couscous },
+  { name: 'Tajin aux prunes et amandes', price: 16, text: 'Le grand classique sucré-salé de la cuisine marocaine.', photo: photos.tajine },
+  { name: 'Grillades', price: 17, text: 'Pour ceux qui préfèrent les viandes grillées au couscous ou au tajine.', photo: photos.grill },
+];
+
+const gallery = [
+  { p: photos.couscous2, cls: 'g-tall' },
+  { p: photos.the, cls: '' },
+  { p: photos.patisseries, cls: '' },
+  { p: photos.tajine2, cls: 'g-wide' },
+  { p: photos.lanterne, cls: '' },
+  { p: photos.epices, cls: '' },
+];
+---
+<Base
+  title="Riad Souss · Restaurant marocain à Groslay (95)"
+  description="Restaurant marocain à Groslay (95), près de la gare : couscous, tajines, grillades et pâtisseries. Ouvert du mardi au dimanche, midi et soir. Réservation en ligne."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Restaurant marocain · Groslay, Val-d'Oise</p>
+        <h1>Couscous, tajines et thé à la menthe, à deux pas de la gare de Groslay.</h1>
+        <p class="lead">
+          Riad Souss sert une cuisine 100 % marocaine, midi et soir, six jours sur sept.
+          Venez à deux, en famille ou en groupe.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={business.links.theFork} target="_blank" rel="noopener">
+            <Icon name="calendar" /> Réserver une table
+          </a>
+          <a class="btn btn--ghost" href={business.phoneHref}>
+            <Icon name="phone" /> {business.phoneDisplay}
+          </a>
+        </div>
+        <div class="hero-meta">
+          <OpenStatus />
+          <span class="hero-addr"><Icon name="pin" /> 120 rue du Général Leclerc, Groslay</span>
+        </div>
+      </div>
+
+      <figure class="hero-visual">
+        <div class="arch hero-arch">
+          <img
+            src={img(photos.hero, 900, 1125)}
+            srcset={srcset(photos.hero, [480, 720, 900, 1200], 1.25)}
+            sizes="(min-width: 960px) 44vw, 92vw"
+            width="900" height="1125"
+            alt={photos.hero.alt}
+            fetchpriority="high"
+          />
+          <span class="illustration-tag">Photo d'illustration</span>
+        </div>
+        <svg class="hero-star" viewBox="0 0 100 100" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="22" y="22" width="56" height="56" />
+            <rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)" />
+            <circle cx="50" cy="50" r="16" />
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PREUVE -->
+  <section class="proof" aria-label="Notes et informations clés">
+    <div class="container proof-grid">
+      {ratings.map((r) => (
+        <a class="proof-item" href={r.url} target="_blank" rel="noopener">
+          <span class="proof-score">{r.score}<small>{r.scale}</small></span>
+          <span class="proof-label">{r.source} · {r.count} avis</span>
+        </a>
+      ))}
+      <div class="proof-item">
+        <span class="proof-score proof-icon"><Icon name="clock" /></span>
+        <span class="proof-label">Mardi → dimanche<br />midi et soir</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-score proof-icon"><Icon name="wheelchair" /></span>
+        <span class="proof-label">Entrée et places<br />accessibles en fauteuil</span>
+      </div>
+    </div>
+    <p class="container proof-note small">Notes publiques relevées le {RELEVE}.</p>
+  </section>
+
+  <!-- MAISON -->
+  <section class="section">
+    <div class="container maison">
+      <div class="maison-visual reveal">
+        <div class="arch">
+          <img src={img(photos.the, 640, 800)} srcset={srcset(photos.the, [400, 640, 900], 1.25)} sizes="(min-width: 900px) 34vw, 80vw" width="640" height="800" loading="lazy" alt={photos.the.alt} />
+          <span class="illustration-tag">Photo d'illustration</span>
+        </div>
+      </div>
+      <div class="maison-copy reveal">
+        <p class="eyebrow">La maison</p>
+        <h2>Une table marocaine de quartier, à Groslay.</h2>
+        <p>
+          Le Riad Souss est installé au 120 rue du Général Leclerc, à une centaine de mètres de la gare de Groslay (ligne H).
+          La carte reste centrée sur les classiques marocains : couscous, tajines, grillades, pastilla, puis thé à la menthe et pâtisseries.
+        </p>
+        <p>
+          Dans les avis, les clients citent d'abord l'accueil : le service obtient 9,6/10 sur TheFork.
+          Beaucoup reviennent régulièrement, à deux ou pour un repas de famille.
+        </p>
+        <a class="text-link" href="/infos-pratiques">Horaires, accès et services <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTE EN BREF -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">À la carte</p>
+        <h2>Les incontournables</h2>
+        <p>Trois plats de la carte publiée par le restaurant. Les prix indiqués sont ceux de la carte en ligne (mise à jour du {MENU_UPDATED}) : demandez la carte du jour sur place.</p>
+      </div>
+      <div class="grid grid--3">
+        {signatures.map((s, i) => (
+          <article class="dish reveal" style={`--i:${i}`}>
+            <div class="dish-img">
+              <img src={img(s.photo, 640, 480)} srcset={srcset(s.photo, [400, 640, 900], 0.75)} sizes="(min-width: 720px) 30vw, 92vw" width="640" height="480" loading="lazy" alt={s.photo.alt} />
+              <span class="illustration-tag">Photo d'illustration</span>
+            </div>
+            <div class="dish-body">
+              <h3><span>{s.name}</span><span class="price">{euro(s.price)}</span></h3>
+              <p class="muted">{s.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="center"><a class="btn btn--ghost" href="/carte">Voir toute la carte <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section class="section section--night">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Ce qu'en disent les clients</p>
+        <h2>Ce qui revient dans les avis</h2>
+        <p>Une synthèse des avis publics laissés sur Google et TheFork. Pour lire les avis complets, consultez directement ces plateformes.</p>
+      </div>
+      <div class="grid grid--4">
+        {reviewThemes.map((t) => (
+          <div class="theme reveal">
+            <svg class="theme-star" viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="8" width="16" height="16" /><rect x="8" y="8" width="16" height="16" transform="rotate(45 16 16)" /></g></svg>
+            <h3>{t.title}</h3>
+            <p>{t.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="btn-row review-links">
+        {ratings.map((r) => (
+          <a class="btn btn--light" href={r.url} target="_blank" rel="noopener">Avis {r.source} ({r.score}{r.scale}) <Icon name="external" /></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- GROUPES -->
+  <section class="section">
+    <div class="container groupes">
+      <div class="reveal">
+        <p class="eyebrow">Groupes & événements</p>
+        <h2>Un repas marocain pour votre groupe</h2>
+        <p class="lead">Anniversaire, repas de famille ou dîner d'équipe : le restaurant accueille aussi les groupes. Un client raconte y avoir organisé un dîner professionnel de 40 personnes, avec entrées, plats, desserts, thé et pâtisseries.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/contact?sujet=groupe"><Icon name="users" /> Demander un devis groupe</a>
+          <a class="text-link" href="/groupes">Comment ça se passe <Icon name="arrow" /></a>
+        </div>
+      </div>
+      <div class="groupes-visual reveal">
+        <img src={img(photos.patisseries2, 800, 600)} srcset={srcset(photos.patisseries2, [480, 800, 1100], 0.75)} sizes="(min-width: 900px) 44vw, 92vw" width="800" height="600" loading="lazy" alt={photos.patisseries2.alt} />
+        <span class="illustration-tag">Photo d'illustration</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIE -->
+  <section class="section section--surface" aria-labelledby="galerie-titre">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Galerie</p>
+        <h2 id="galerie-titre">L'esprit de la cuisine marocaine</h2>
+        <p class="note"><strong>Photos d'illustration.</strong> Ces images libres de droits (Unsplash) ne montrent pas le restaurant ni ses plats. Elles seront remplacées par les photos du Riad Souss.</p>
+      </div>
+      <div class="gallery">
+        {gallery.map(({ p, cls }) => (
+          <figure class:list={['g-item', cls, 'reveal']}>
+            <img src={img(p, 700, 700)} srcset={srcset(p, [360, 700, 1000], 1)} sizes="(min-width: 900px) 30vw, 46vw" width="700" height="700" loading="lazy" alt={p.alt} />
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INFOS -->
+  <section class="section" aria-labelledby="venir-titre">
+    <div class="container infos">
+      <div class="reveal">
+        <p class="eyebrow">Nous trouver</p>
+        <h2 id="venir-titre">Horaires & accès</h2>
+        <Hours />
+        <ul class="facts">
+          <li><Icon name="pin" /> <span>{business.address.street}, {business.address.postalCode} {business.address.city}</span></li>
+          <li><Icon name="train" /> <span>{business.access.train}</span></li>
+          <li><Icon name="wheelchair" /> <span>{business.access.pmr}</span></li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={business.links.directions} target="_blank" rel="noopener"><Icon name="pin" /> Itinéraire</a>
+          <a class="btn btn--ghost" href={business.phoneHref}><Icon name="phone" /> Appeler</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <MapEmbed />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .hero { padding-block: clamp(2rem, 1rem + 4vw, 5rem) clamp(2.5rem, 2rem + 3vw, 5rem); overflow: hidden; }
+  .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; } }
+  .hero h1 { max-width: 18ch; }
+  @media (min-width: 960px) { .hero h1 { font-size: clamp(3rem, 1.6rem + 2.6vw, 4.2rem); } }
+  .hero .lead { margin-bottom: 2rem; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin-top: 1.75rem; color: var(--ink-soft); font-size: var(--step--1); }
+  .hero-addr { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .hero-addr :global(svg) { width: 1rem; height: 1rem; }
+  .hero-visual { position: relative; margin: 0; max-width: 520px; justify-self: center; width: 100%; }
+  .hero-arch { aspect-ratio: 4 / 5; }
+  .hero-star { position: absolute; width: 140px; color: var(--safran); right: -40px; top: -30px; z-index: -1; opacity: 0.8; }
+  @media (max-width: 959px) { .hero-visual { max-width: 420px; } .hero-star { width: 100px; right: -20px; } }
+
+  /* PREUVE */
+  .proof { border-block: 1px solid var(--line); background: var(--surface); padding-block: 1.5rem 0.75rem; }
+  .proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (min-width: 860px) { .proof-grid { grid-template-columns: repeat(4, 1fr); } }
+  .proof-item { display: flex; flex-direction: column; gap: 0.2rem; text-decoration: none; padding: 0.5rem 0; }
+  a.proof-item:hover .proof-label { color: var(--terracotta); }
+  .proof-score { font-family: var(--font-display); font-size: 2.2rem; line-height: 1; color: var(--ink); }
+  .proof-score small { font-size: 1rem; color: var(--ink-soft); margin-left: 2px; }
+  .proof-icon :global(svg) { width: 2rem; height: 2rem; color: var(--zellige); }
+  .proof-label { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.35; }
+  .proof-note { color: var(--ink-soft); margin: 0.5rem auto 0; opacity: 0.85; }
+
+  /* MAISON */
+  .maison { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 900px) { .maison { grid-template-columns: 0.8fr 1.2fr; gap: 5rem; } }
+  .maison-visual .arch { aspect-ratio: 4 / 5; max-width: 380px; margin-inline: auto; }
+  .maison-copy p { color: var(--ink-soft); max-width: 58ch; }
+
+  /* PLATS */
+  .dish { background: var(--chaux); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition-delay: calc(var(--i) * 80ms); }
+  .dish-img { position: relative; aspect-ratio: 4 / 3; background: #d9c9b5; }
+  .dish-img img { width: 100%; height: 100%; object-fit: cover; }
+  .dish-body { padding: 1.4rem 1.4rem 1.6rem; }
+  .dish h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .price { font-family: var(--font-body); font-weight: 700; font-size: 1.05rem; color: var(--terracotta); white-space: nowrap; }
+  .center { text-align: center; margin: var(--space-l) 0 0; }
+
+  /* AVIS */
+  .theme { border-top: 1px solid rgba(255, 255, 255, 0.16); padding-top: 1.5rem; }
+  .theme h3 { color: #fff; }
+  .theme p { color: #cbbfb2; margin: 0; }
+  .theme-star { width: 28px; height: 28px; color: var(--safran); margin-bottom: 1rem; }
+  .review-links { margin-top: var(--space-l); }
+  .review-links :global(svg) { width: 1rem; height: 1rem; }
+
+  /* GROUPES */
+  .groupes { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 900px) { .groupes { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+  .groupes .lead { max-width: 46ch; margin-bottom: 2rem; }
+  .groupes .btn-row { align-items: center; gap: 1.25rem; }
+  .groupes-visual { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4 / 3; background: #d9c9b5; }
+  .groupes-visual img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* GALERIE */
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  @media (min-width: 900px) { .gallery { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 260px; gap: 1rem; } }
+  .g-item { margin: 0; border-radius: var(--radius); overflow: hidden; background: #d9c9b5; aspect-ratio: 1; }
+  .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+  .g-item:hover img { transform: scale(1.03); }
+  @media (min-width: 900px) {
+    .g-item { aspect-ratio: auto; }
+    .g-tall { grid-row: span 2; }
+    .g-wide { grid-column: span 2; }
+  }
+
+  /* INFOS */
+  .infos { display: grid; gap: 2.5rem; }
+  @media (min-width: 960px) { .infos { grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: start; } }
+  .facts { list-style: none; padding: 0; margin: 1.75rem 0; display: grid; gap: 0.75rem; }
+  .facts li { display: flex; gap: 0.75rem; align-items: flex-start; }
+  .facts :global(svg) { width: 1.25rem; height: 1.25rem; color: var(--zellige); flex: none; margin-top: 0.2rem; }
+</style>

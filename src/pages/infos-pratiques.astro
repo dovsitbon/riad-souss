@@ -1,0 +1,143 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Hours from '../components/Hours.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/site';
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+
+const faq = [
+  {
+    q: 'Quels sont les horaires du Riad Souss ?',
+    a: 'Le restaurant est ouvert du mardi au dimanche, de 12 h à 14 h 30 et de 19 h à 22 h 30. Il est fermé le lundi.',
+  },
+  {
+    q: 'Le restaurant est-il ouvert le dimanche ?',
+    a: 'Oui, le Riad Souss est ouvert le dimanche midi et le dimanche soir. Le seul jour de fermeture est le lundi.',
+  },
+  {
+    q: 'Comment réserver une table ?',
+    a: `Vous pouvez réserver en ligne sur TheFork, gratuitement, ou appeler le restaurant au ${business.phoneDisplay}.`,
+  },
+  {
+    q: 'Quel est le prix moyen d’un repas ?',
+    a: 'Le restaurant indique un prix moyen de 30 € pour une entrée et un plat, ou un plat et un dessert, hors boissons. Sur la carte en ligne, les plats vont de 16 à 19 €.',
+  },
+  {
+    q: 'La viande est-elle halal ?',
+    a: 'La fiche TheFork du restaurant indique « Halal » dans les choix alimentaires. Pour une question précise sur un plat, appelez le restaurant.',
+  },
+  {
+    q: 'Peut-on commander à emporter ?',
+    a: `Plusieurs annuaires indiquent que la vente à emporter est possible. Pour commander ou vérifier, appelez le restaurant au ${business.phoneDisplay}.`,
+  },
+  {
+    q: 'Le restaurant est-il accessible en fauteuil roulant ?',
+    a: 'Oui. L’entrée et les places assises sont indiquées comme accessibles en fauteuil roulant.',
+  },
+  {
+    q: 'Comment venir en transports en commun ?',
+    a: 'Le restaurant est à une centaine de mètres de la gare de Groslay, desservie par le Transilien ligne H depuis Paris-Gare du Nord.',
+  },
+  {
+    q: 'Le restaurant accueille-t-il les groupes ?',
+    a: 'Oui, les repas de groupe sont possibles. Envoyez une demande depuis la page Contact en précisant la date et le nombre de personnes, ou appelez le restaurant.',
+  },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const crumbsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Infos pratiques', item: `${site}/infos-pratiques` },
+  ],
+};
+---
+<Base
+  title="Horaires, accès et infos pratiques"
+  description="Riad Souss, 120 rue du Général Leclerc, Groslay : ouvert du mardi au dimanche, 12h–14h30 et 19h–22h30. Gare (ligne H) à 100 m, accès fauteuil roulant."
+  jsonLd={[faqLd, crumbsLd]}
+>
+  <PageHero title="Infos pratiques" eyebrow="Venir au Riad Souss" crumb="Infos pratiques">
+    <p class="lead">Horaires, adresse, accès et réponses aux questions les plus fréquentes.</p>
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="container info-grid">
+      <div class="card">
+        <h2 class="h-card"><Icon name="clock" /> Horaires</h2>
+        <Hours />
+        <p class="small muted src">Horaires de la fiche Google de l'établissement. Les jours fériés peuvent différer : en cas de doute, appelez.</p>
+      </div>
+      <div class="card">
+        <h2 class="h-card"><Icon name="pin" /> Adresse & accès</h2>
+        <address>
+          <strong>Riad Souss</strong><br />
+          {business.address.street}<br />
+          {business.address.postalCode} {business.address.city}
+        </address>
+        <ul class="facts">
+          <li><Icon name="train" /> {business.access.train}</li>
+          <li><Icon name="wheelchair" /> {business.access.pmr}</li>
+          <li><Icon name="phone" /> <a href={business.phoneHref}>{business.phoneDisplay}</a></li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={business.links.directions} target="_blank" rel="noopener"><Icon name="pin" /> Itinéraire</a>
+          <a class="btn btn--ghost" href={business.links.theFork} target="_blank" rel="noopener"><Icon name="calendar" /> Réserver</a>
+        </div>
+      </div>
+    </div>
+    <div class="container map-wrap">
+      <MapEmbed />
+    </div>
+  </section>
+
+  <section class="section section--surface" aria-labelledby="faq-titre">
+    <div class="container faq-wrap">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-titre">Questions fréquentes</h2>
+      </div>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary><h3>{f.q}</h3><span class="plus" aria-hidden="true"></span></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .info-grid { display: grid; gap: 1.25rem; }
+  @media (min-width: 900px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+  .h-card { font-size: var(--step-2); display: flex; align-items: center; gap: 0.6rem; }
+  .h-card :global(svg) { width: 1.6rem; height: 1.6rem; color: var(--terracotta); }
+  .src { margin-top: 1rem; margin-bottom: 0; }
+  address { font-style: normal; margin-bottom: 1.25rem; line-height: 1.7; }
+  .facts { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: 0.7rem; }
+  .facts li { display: flex; gap: 0.7rem; align-items: flex-start; }
+  .facts :global(svg) { width: 1.25rem; height: 1.25rem; color: var(--zellige); flex: none; margin-top: 0.2rem; }
+  .map-wrap { margin-top: 1.25rem; padding-bottom: var(--space-l); }
+  .map-wrap :global(iframe) { aspect-ratio: 16 / 7; min-height: 320px; }
+  .faq-wrap { max-width: 860px; }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 0; min-height: 44px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary h3 { margin: 0; font-size: var(--step-1); }
+  .plus { position: relative; width: 16px; height: 16px; flex: none; }
+  .plus::before, .plus::after { content: ''; position: absolute; left: 0; top: 7px; width: 16px; height: 2px; background: var(--terracotta); transition: transform 0.2s; }
+  .plus::after { transform: rotate(90deg); }
+  .faq details[open] .plus::after { transform: rotate(0deg); opacity: 0; }
+  .faq details p { color: var(--ink-soft); max-width: 65ch; padding-bottom: 1.25rem; margin: 0; }
+</style>

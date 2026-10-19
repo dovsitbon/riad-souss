@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business, photos, img, srcset } from '../data/site';
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+const steps = [
+  { t: 'Envoyez votre demande', d: "Indiquez la date, le nombre de personnes et l'occasion via le formulaire, ou appelez le restaurant." },
+  { t: 'Le restaurant vous recontacte', d: 'Il vérifie la disponibilité et voit avec vous la formule et le budget.' },
+  { t: 'Vous confirmez', d: "La réservation n'est ferme qu'après confirmation directe avec le restaurant." },
+];
+const occasions = ['Repas de famille', 'Anniversaire', "Dîner d'équipe ou de fin d'année", 'Repas entre amis', 'Déjeuner professionnel'];
+const crumbsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Repas de groupe', item: `${site}/groupes` },
+  ],
+};
+---
+<Base
+  title="Repas de groupe à Groslay"
+  description="Organisez un repas de groupe au Riad Souss à Groslay (95) : famille, anniversaire, dîner d'équipe. Envoyez votre demande en ligne ou appelez le 01 39 83 13 59."
+  jsonLd={[crumbsLd]}
+>
+  <PageHero title="Repas de groupe & événements" eyebrow="Groupes" crumb="Repas de groupe">
+    <p class="lead">Pour un repas de famille ou un dîner d'équipe, le Riad Souss accueille aussi les groupes. Le menu et le budget se voient directement avec le restaurant.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/contact?sujet=groupe"><Icon name="users" /> Faire une demande</a>
+      <a class="btn btn--ghost" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+    </div>
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="container split">
+      <div>
+        <h2>Ils l'ont déjà fait</h2>
+        <p class="muted">
+          Un avis Google publié en 2026 raconte un dîner professionnel de 40 personnes organisé au restaurant.
+          Le repas comprenait entrées, plats, desserts, thé à la menthe et pâtisseries marocaines, et la cliente s'en est dite satisfaite.
+        </p>
+        <h3>Pour quelles occasions ?</h3>
+        <ul class="chips">
+          {occasions.map((o) => <li>{o}</li>)}
+        </ul>
+        <p class="note">
+          <strong>À savoir :</strong> le nombre maximal de couverts, la privatisation et les menus de groupe ne sont pas publiés.
+          Le restaurant vous les précisera selon votre date.
+        </p>
+      </div>
+      <div class="split-visual">
+        <img src={img(photos.tajine2, 760, 950)} srcset={srcset(photos.tajine2, [420, 760, 1000], 1.25)} sizes="(min-width: 900px) 40vw, 92vw" width="760" height="950" loading="lazy" alt={photos.tajine2.alt} />
+        <span class="illustration-tag">Photo d'illustration</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Comment ça marche</p>
+        <h2>Trois étapes, sans engagement</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="card">
+            <span class="step-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.t}</h3>
+            <p class="muted">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="center"><a class="btn btn--primary" href="/contact?sujet=groupe">Envoyer ma demande de groupe <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .lead { margin-bottom: 2rem; }
+  .split { display: grid; gap: 3rem; padding-bottom: var(--space-xl); align-items: start; }
+  @media (min-width: 900px) { .split { grid-template-columns: 1.1fr 0.9fr; gap: 5rem; } }
+  .split h2 { font-size: var(--step-2); }
+  .split h3 { margin-top: 2rem; }
+  .chips { list-style: none; padding: 0; margin: 0 0 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chips li { padding: 0.45rem 0.9rem; background: var(--zellige-soft); color: var(--zellige); border-radius: 999px; font-weight: 500; font-size: 0.95rem; }
+  .split-visual { position: relative; border-radius: 999px 999px var(--radius) var(--radius); overflow: hidden; aspect-ratio: 4 / 5; background: #d9c9b5; max-width: 440px; justify-self: center; width: 100%; }
+  .split-visual img { width: 100%; height: 100%; object-fit: cover; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; }
+  @media (min-width: 820px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step-n { font-family: var(--font-display); font-size: 2.4rem; color: var(--terracotta); display: block; margin-bottom: 0.75rem; line-height: 1; }
+  .center { text-align: center; margin: var(--space-l) 0 0; }
+</style>

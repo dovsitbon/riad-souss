@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { business } from '../data/site';
+---
+<Base title="Politique de confidentialité" description="Comment le site du Riad Souss traite vos données personnelles." noindex>
+  <PageHero title="Confidentialité" eyebrow="Données personnelles" crumb="Confidentialité" />
+  <section class="section--tight">
+    <div class="container prose">
+      <p class="note">Les éléments signalés <span class="todo">À compléter</span> doivent être validés par l'exploitant.</p>
+
+      <h2>Responsable du traitement</h2>
+      <p>{business.legal.company} ({business.legal.form}), Riad Souss, {business.address.street}, {business.address.postalCode} {business.address.city}. Contact : <span class="todo">adresse e-mail à compléter</span> ou {business.phoneDisplay}.</p>
+
+      <h2>Données collectées</h2>
+      <p>Le site ne collecte des données que lorsque vous utilisez le formulaire de contact : nom, adresse e-mail, téléphone (facultatif), date et nombre de personnes (demandes de groupe), contenu du message.</p>
+
+      <h2>Finalité et base légale</h2>
+      <p>Ces données servent uniquement à répondre à votre demande. Le traitement repose sur votre consentement, donné en cochant la case du formulaire.</p>
+
+      <h2>Destinataires et sous-traitants</h2>
+      <ul>
+        <li>Le restaurant Riad Souss, seul destinataire des messages.</li>
+        <li>Vercel (hébergement du site).</li>
+        <li>Resend (acheminement des e-mails du formulaire), si l'envoi en ligne est activé.</li>
+      </ul>
+      <p>Ces prestataires peuvent traiter des données hors de l'Union européenne, dans le cadre des garanties prévues par le RGPD (clauses contractuelles types).</p>
+
+      <h2>Durée de conservation</h2>
+      <p>Les messages sont conservés le temps nécessaire au traitement de la demande, puis au maximum <span class="todo">durée à confirmer, ex. 12 mois</span>.</p>
+
+      <h2>Cookies et mesure d'audience</h2>
+      <p>
+        Ce site ne dépose aucun cookie publicitaire ni de mesure d'audience. La carte est fournie par OpenStreetMap, sans cookie de suivi.
+        Les liens vers TheFork, Google Maps ou Instagram vous mènent vers ces services, qui appliquent leurs propres règles.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Vous pouvez accéder à vos données, les rectifier, les effacer, vous opposer à leur traitement ou en demander la portabilité en contactant le restaurant.
+        Vous pouvez aussi introduire une réclamation auprès de la <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">CNIL</a>.
+      </p>
+    </div>
+  </section>
+</Base>

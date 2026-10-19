@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { business } from '../data/site';
+const L = business.legal;
+---
+<Base title="Mentions légales" description="Mentions légales du site du restaurant Riad Souss à Groslay." noindex>
+  <PageHero title="Mentions légales" eyebrow="Informations légales" crumb="Mentions légales" />
+  <section class="section--tight">
+    <div class="container prose">
+      <p class="note">
+        Les éléments signalés <span class="todo">À compléter</span> doivent être fournis par l'exploitant avant la mise en ligne définitive.
+        Les autres informations proviennent de l'annuaire officiel des entreprises (INSEE / recherche-entreprises.api.gouv.fr).
+      </p>
+
+      <h2>Éditeur du site</h2>
+      <ul>
+        <li>Raison sociale : {L.company} ({L.form}), enseigne « Riad Souss »</li>
+        <li>Siège social : {business.address.street}, {business.address.postalCode} {business.address.city}</li>
+        <li>SIREN : {L.siren} · SIRET : {L.siret}</li>
+        <li>Activité (NAF) : {L.naf}</li>
+        <li>Capital social : <span class="todo">À compléter</span></li>
+        <li>RCS : <span class="todo">À compléter (ville du greffe)</span></li>
+        <li>N° TVA intracommunautaire : <span class="todo">À compléter</span></li>
+        <li>Téléphone : <a href={business.phoneHref}>{business.phoneDisplay}</a></li>
+        <li>E-mail : <span class="todo">À compléter</span></li>
+        <li>Directeur de la publication : {L.president}, président de la SAS</li>
+      </ul>
+
+      <h2>Hébergement</h2>
+      <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis — <a href="https://vercel.com" target="_blank" rel="noopener">vercel.com</a>.</p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        Les textes et la mise en page de ce site sont protégés. Les photographies présentes sur le site sont des photos d'illustration
+        issues d'<a href="https://unsplash.com/license" target="_blank" rel="noopener">Unsplash</a> (licence Unsplash) : elles ne représentent ni le restaurant ni ses plats.
+        La carte interactive utilise les données © contributeurs <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>.
+      </p>
+
+      <h2>Informations commerciales</h2>
+      <p>
+        Les prix affichés sur le site proviennent de la carte publiée par le restaurant en ligne. Ils sont indicatifs ;
+        seuls les prix affichés dans l'établissement font foi. Les notes et synthèses d'avis renvoient aux plateformes d'origine (Google, TheFork).
+      </p>
+
+      <h2>Données personnelles</h2>
+      <p>Voir la <a href="/confidentialite">politique de confidentialité</a>.</p>
+    </div>
+  </section>
+</Base>

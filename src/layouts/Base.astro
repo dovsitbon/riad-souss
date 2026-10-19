@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileActions from '../components/MobileActions.astro';
+import { business, hours, photos, img } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description, jsonLd = [], noindex = false } = Astro.props;
+const site = Astro.site!.toString().replace(/\/$/, '');
+const pathname = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/$/, '');
+const canonical = site + (pathname || '/');
+const ogImage = img(photos.hero, 1200, 630);
+const fullTitle = title.includes('Riad Souss') ? title : `${title} · Riad Souss`;
+
+const dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const restaurant = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  '@id': `${site}/#restaurant`,
+  name: business.name,
+  url: `${site}/`,
+  telephone: business.phoneE164,
+  servesCuisine: ['Marocaine', 'Couscous', 'Tajine'],
+  priceRange: business.priceRange,
+  acceptsReservations: 'True',
+  hasMenu: `${site}/carte`,
+  image: ogImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    postalCode: business.address.postalCode,
+    addressLocality: business.address.city,
+    addressRegion: business.address.region,
+    addressCountry: business.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+  hasMap: business.links.googleMaps,
+  openingHoursSpecification: hours.flatMap((d) =>
+    d.slots.map(([opens, closes]) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: dayMap[d.day],
+      opens,
+      closes,
+    })),
+  ),
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: 'Entrée accessible en fauteuil roulant', value: true },
+  ],
+  sameAs: [business.links.instagram, business.links.theFork, business.links.tripadvisor],
+};
+const ld = [restaurant, ...jsonLd];
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical || site} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#f5efe6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Riad Souss" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical || site} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Plat marocain (photo d'illustration)" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="geo.region" content="FR-95" />
+    <meta name="geo.placename" content="Groslay" />
+    <meta name="geo.position" content={`${business.geo.lat};${business.geo.lng}`} />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+    <MobileActions />
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        }),
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

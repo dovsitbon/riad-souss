@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business, menu, citedDishes, MENU_UPDATED, euro, photos, img, srcset } from '../data/site';
+
+const site = Astro.site!.toString().replace(/\/$/, '');
+const menuLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: 'Carte du Riad Souss',
+  url: `${site}/carte`,
+  inLanguage: 'fr',
+  mainEntityOfPage: `${site}/carte`,
+  hasMenuSection: menu.map((s) => ({
+    '@type': 'MenuSection',
+    name: s.title,
+    hasMenuItem: s.items.map((it) => ({
+      '@type': 'MenuItem',
+      name: it.name,
+      offers: { '@type': 'Offer', price: it.price.toFixed(2), priceCurrency: 'EUR' },
+    })),
+  })),
+};
+const crumbsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'La carte', item: `${site}/carte` },
+  ],
+};
+---
+<Base
+  title="Carte : couscous et tajines à Groslay"
+  description="La carte du Riad Souss à Groslay : pastilla, couscous mishoui, tajine aux prunes et amandes, grillades, pâtisseries marocaines. Prix moyen : 30 €."
+  jsonLd={[menuLd, crumbsLd]}
+>
+  <PageHero title="La carte" eyebrow="Cuisine marocaine" crumb="La carte">
+    <p class="lead">Entrées, couscous, tajines, grillades et douceurs. Le prix moyen indiqué par le restaurant est de {business.averagePrice} pour une entrée et un plat, ou un plat et un dessert, hors boissons.</p>
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="container carte">
+      <div class="carte-main">
+        <p class="note">
+          <strong>Prix indicatifs.</strong> Les plats et prix ci-dessous sont ceux de la carte publiée par le restaurant sur TheFork, dont la dernière mise à jour date du {MENU_UPDATED}.
+          Ils ont pu changer : la carte en vigueur est celle remise sur place. Le restaurant est indiqué comme proposant des plats halal sur sa fiche TheFork.
+        </p>
+
+        {menu.map((section) => (
+          <section class="menu-section" aria-labelledby={`m-${section.id}`}>
+            <h2 id={`m-${section.id}`}>{section.title}</h2>
+            <ul>
+              {section.items.map((it) => (
+                <li>
+                  <span class="name">{it.name}</span>
+                  <span class="dots" aria-hidden="true"></span>
+                  <span class="price">{euro(it.price)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        <section class="menu-section" aria-labelledby="m-cites">
+          <h2 id="m-cites">Aussi cités par les clients</h2>
+          <p class="muted">Ces plats reviennent dans les avis publics mais ne figurent pas sur la carte en ligne. Leur disponibilité et leur prix sont à demander au restaurant.</p>
+          <ul class="chips">
+            {citedDishes.map((d) => <li>{d}</li>)}
+          </ul>
+        </section>
+      </div>
+
+      <aside class="carte-aside">
+        <div class="aside-card">
+          <div class="arch">
+            <img src={img(photos.couscous2, 520, 650)} srcset={srcset(photos.couscous2, [360, 520, 780], 1.25)} sizes="(min-width: 960px) 26vw, 80vw" width="520" height="650" loading="lazy" alt={photos.couscous2.alt} />
+            <span class="illustration-tag">Photo d'illustration</span>
+          </div>
+          <h2 class="aside-title">Une envie de couscous ?</h2>
+          <p class="muted">Réservez en ligne ou appelez directement le restaurant.</p>
+          <div class="aside-actions">
+            <a class="btn btn--primary" href={business.links.theFork} target="_blank" rel="noopener"><Icon name="calendar" /> Réserver une table</a>
+            <a class="btn btn--ghost" href={business.phoneHref}><Icon name="phone" /> {business.phoneDisplay}</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .carte { display: grid; gap: 3rem; padding-bottom: var(--space-xl); }
+  @media (min-width: 960px) { .carte { grid-template-columns: 1.6fr 1fr; gap: 5rem; align-items: start; } }
+  .menu-section { margin-top: 3rem; }
+  .menu-section h2 {
+    font-size: var(--step-2);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .menu-section h2::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .menu-section ul { list-style: none; margin: 0; padding: 0; }
+  .menu-section li { display: flex; align-items: baseline; gap: 0.75rem; padding: 0.85rem 0; }
+  .name { font-family: var(--font-display); font-size: 1.2rem; }
+  .dots { flex: 1; border-bottom: 1.5px dotted rgba(43, 32, 26, 0.3); transform: translateY(-4px); min-width: 1.5rem; }
+  .price { font-weight: 700; color: var(--terracotta); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .chips { display: flex !important; flex-wrap: wrap; gap: 0.5rem; }
+  .chips li { padding: 0.45rem 0.9rem !important; background: var(--zellige-soft); color: var(--zellige); border-radius: 999px; font-weight: 500; font-size: 0.95rem; }
+  .carte-aside { position: sticky; top: 96px; }
+  .aside-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; }
+  .aside-card .arch { aspect-ratio: 4 / 5; max-width: 280px; margin: 0 auto 1.5rem; }
+  .aside-title { font-size: var(--step-2); }
+  .aside-actions { display: grid; gap: 0.6rem; }
+  @media (max-width: 959px) { .carte-aside { position: static; } }
+</style>

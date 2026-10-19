@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { business } from '../data/site';
+---
+<Base title="Page introuvable" description="Cette page n'existe pas sur le site du Riad Souss." noindex>
+  <section class="section">
+    <div class="container" style="max-width: 640px; text-align: center;">
+      <p class="eyebrow">Erreur 404</p>
+      <h1>Cette page s'est égarée dans la médina.</h1>
+      <p class="lead" style="margin-inline: auto;">Le lien est peut-être ancien. Voici où aller :</p>
+      <div class="btn-row" style="justify-content: center;">
+        <a class="btn btn--primary" href="/">Accueil</a>
+        <a class="btn btn--ghost" href="/carte">La carte</a>
+        <a class="btn btn--ghost" href={business.phoneHref}>{business.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</Base>

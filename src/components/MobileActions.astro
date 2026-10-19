@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+---
+<nav class="mobile-actions" aria-label="Actions rapides">
+  <a href={business.phoneHref}><Icon name="phone" /><span>Appeler</span></a>
+  <a href={business.links.theFork} target="_blank" rel="noopener" class="primary"><Icon name="calendar" /><span>Réserver</span></a>
+  <a href={business.links.directions} target="_blank" rel="noopener"><Icon name="pin" /><span>Itinéraire</span></a>
+</nav>
+
+<style>
+  .mobile-actions {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    display: grid; grid-template-columns: 1fr 1.2fr 1fr;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+    gap: 8px;
+    box-shadow: 0 -10px 30px -20px rgba(43, 32, 26, 0.45);
+  }
+  .mobile-actions a {
+    display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+    min-height: 52px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    color: var(--ink); border: 1px solid var(--line);
+  }
+  .mobile-actions a.primary { background: var(--terracotta); color: #fff; border-color: var(--terracotta); }
+  .mobile-actions :global(svg) { width: 1.2rem; height: 1.2rem; }
+  @media (min-width: 760px) { .mobile-actions { display: none; } }
+</style>
